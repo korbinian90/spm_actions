@@ -42,19 +42,13 @@ jobs:
             - name: Download Linux Artifact
               uses: actions/download-artifact@v4
               with:
-                  name: spm-matlab-linux
+                  name: spm-matlab-ubuntu-latest
                   path: artifacts/linux
-
-            - name: Download macOS Artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: spm-matlab-macos
-                  path: artifacts/macos 
 
             - name: Download Windows Artifact
               uses: actions/download-artifact@v4
               with:
-                  name: spm-matlab-windows
+                  name: spm-matlab-windows-latest
                   path: artifacts/windows
 
             - name: Merge Artifacts
