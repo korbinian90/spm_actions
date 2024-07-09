@@ -19,3 +19,8 @@ jobs:
                 make -C src distclean
                 make -C src
                 make -C src install
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v3
+              with:
+                  name: spm-matlab
+                  path: ./**/*.mexa64
