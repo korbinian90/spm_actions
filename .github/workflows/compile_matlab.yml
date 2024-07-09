@@ -35,3 +35,39 @@ jobs:
               with:
                   name: spm-matlab-${{ matrix.os }}
                   path: ./**/*.${{ matrix.mex_ext }}
+
+
+    merge_artifacts:
+        runs-on: ubuntu-latest
+        needs: compile_mex
+        steps:
+            - name: Download Linux Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: spm-matlab-linux
+                  path: artifacts/linux
+
+            - name: Download macOS Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: spm-matlab-macos
+                  path: artifacts/macos 
+
+            - name: Download Windows Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: spm-matlab-windows
+                  path: artifacts/windows
+
+            - name: Merge Artifacts
+              run: |
+                  mkdir -p artifacts/all
+                  cp -r artifacts/linux/* artifacts/all/
+                  cp -r artifacts/macos/* artifacts/all/
+                  cp -r artifacts/windows/* artifacts/all/
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: spm-matlab
+                  path: artifacts/all
