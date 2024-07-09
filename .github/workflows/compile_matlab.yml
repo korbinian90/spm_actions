@@ -9,12 +9,14 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, windows-latest]
+                os: [ubuntu-latest, windows-latest, macos-13] # macos-latest throws errors when compiling mex
                 include:
                     - os: ubuntu-latest
                       mex_ext: mexa64
                     - os: windows-latest
                       mex_ext: mexw64
+                    - os: macos-13
+                      mex_ext: mexmaci64
 
         steps:
             - name: Set up MATLAB
@@ -44,6 +46,12 @@ jobs:
               with:
                   name: spm-matlab-ubuntu-latest
                   path: artifacts/linux
+
+            - name: Download macOS Artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: spm-matlab-macos-13
+                  path: artifacts/macos
 
             - name: Download Windows Artifact
               uses: actions/download-artifact@v4
