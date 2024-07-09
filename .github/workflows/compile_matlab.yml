@@ -9,9 +9,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Set up MATLAB
-              uses: matlab-actions/setup-matlab@v1
+              uses: matlab-actions/setup-matlab@v2
             - name: Checkout spm/spm/
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   repository: spm/spm
             - name: Compile MEX files
@@ -20,7 +20,7 @@ jobs:
                 make -C src
                 make -C src install
             - name: Upload Artifact
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: spm-matlab
                   path: ./**/*.mexa64
