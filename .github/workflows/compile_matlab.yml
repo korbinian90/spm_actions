@@ -26,13 +26,18 @@ jobs:
         with:
           repository: spm/spm
 
-      - name: Delete old mex files on ubuntu and mac
+      - name: Delete old MEX files on Ubuntu and Mac
         if: matrix.os != 'windows-latest'
-        run: rm -rf ./**/*.mex*
+        run: find . -type f -name "*.mex*" -delete
 
-      - name: Delete old mex files on windows
+      - name: Delete old MEX files on Windows
         if: matrix.os == 'windows-latest'
-        run: Remove-Item -Path .\**\*.mex* -Force
+        run: |
+            $count = Get-ChildItem -Path .\ -Recurse -Include *.mex* | Measure-Object | Select-Object -ExpandProperty Count
+            Write-Output "Number of .mex* files before deletion: $count"
+            Get-ChildItem -Path .\ -Recurse -Include *.mex* | Remove-Item -Force
+            $count = Get-ChildItem -Path .\ -Recurse -Include *.mex* | Measure-Object | Select-Object -ExpandProperty Count
+            Write-Output "Number of .mex* files after deletion: $count"
 
       - name: Compile MEX files
         run: |
@@ -55,8 +60,8 @@ jobs:
         with:
           repository: spm/spm
 
-      - name: Delete old mex files
-        run: rm -rf ./**/*.mex*
+      - name: Delete old MEX files
+        run: find . -type f -name "*.mex*" -delete
 
       - name: Delete hidden files and folders
         run: rm -rf .[^.]*
