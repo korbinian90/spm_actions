@@ -44,10 +44,14 @@ jobs:
           make -C src distclean
           make -C src
           make -C src install
+          make -C src external-distclean
+          make -C src external
+          make -C src external-install
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: spm-matlab-${{ matrix.os }}
+          name: spm-mex-${{ matrix.os }}
           path: ./**/*.${{ matrix.mex_ext }}
           retention-days: 1
 
@@ -69,17 +73,17 @@ jobs:
       - name: Download Linux Artifact
         uses: actions/download-artifact@v4
         with:
-          name: spm-matlab-ubuntu-latest
+          name: spm-mex-ubuntu-latest
 
       - name: Download macOS Artifact
         uses: actions/download-artifact@v4
         with:
-          name: spm-matlab-macos-13
+          name: spm-mex-macos-13
 
       - name: Download Windows Artifact
         uses: actions/download-artifact@v4
         with:
-          name: spm-matlab-windows-latest
+          name: spm-mex-windows-latest
 
       - name: Upload SPM with mex files as Artifact
         uses: actions/upload-artifact@v4
