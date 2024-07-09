@@ -12,11 +12,11 @@ jobs:
                 os: [ubuntu-latest, macos-latest, windows-latest]
                 include:
                     - os: ubuntu-latest
-                      mex_ext: .mexa64
+                      mex_ext: mexa64
                     - os: macos-latest
-                      mex_ext: .mexmaci64
+                      mex_ext: mexmaci64
                     - os: windows-latest
-                      mex_ext: .mexw64
+                      mex_ext: mexw64
 
         steps:
             - name: Set up MATLAB
