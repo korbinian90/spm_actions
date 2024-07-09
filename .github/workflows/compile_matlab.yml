@@ -25,6 +25,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: spm/spm
+      - name: Delete old mex files
+        run: rm -rf ./**/*.mex*
       - name: Compile MEX files
         run: |
           make -C src distclean
@@ -45,6 +47,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: spm/spm
+
+      - name: Delete old mex files
+        run: rm -rf ./**/*.mex*
+
+      - name: Delete hidden files and folders
+        run: rm -rf .[^.]*
+
       - name: Download Linux Artifact
         uses: actions/download-artifact@v4
         with:
@@ -60,7 +69,7 @@ jobs:
         with:
           name: spm-matlab-windows-latest
 
-      - name: Upload SPM with mex files as Artifact # Avoid to upload files and folders starting with .
+      - name: Upload SPM with mex files as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: spm-matlab
