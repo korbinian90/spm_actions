@@ -1,12 +1,23 @@
 # compile matlab when a commit with the keyword "compile" is made
-name: Compile MATLAB
+name: Compile MEX
 on:
     workflow_dispatch:
     push:
 
 jobs:
-    compile_matlab:
-        runs-on: ubuntu-latest
+    compile_mex:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest, windows-latest]
+                include:
+                    - os: ubuntu-latest
+                      mex_ext: .mexa64
+                    - os: macos-latest
+                      mex_ext: .mexmaci64
+                    - os: windows-latest
+                      mex_ext: .mexw64
+
         steps:
             - name: Set up MATLAB
               uses: matlab-actions/setup-matlab@v2
@@ -22,5 +33,5 @@ jobs:
             - name: Upload Artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: spm-matlab
-                  path: ./**/*.mexa64
+                  name: spm-matlab-${{ matrix.os }}
+                  path: ./**/*.${{ matrix.mex_ext }}
