@@ -1,0 +1,29 @@
+name: Build Matlab Standalone
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build_matlab_standalone:
+    name: Build Matlab Standalone
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v2
+      - name: Checkout SPM
+        uses: actions/checkout@v4
+        with:
+          repository: spm/spm
+
+      # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
+      - name: Build Matlab Standalone
+        uses: matlab-actions/run-command@v2
+        with:
+          command: |
+            addpath(genpath('.'));
+            savepath;
+            spm_make_standalone

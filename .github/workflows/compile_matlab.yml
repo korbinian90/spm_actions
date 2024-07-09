@@ -1,8 +1,6 @@
-# compile matlab when a commit with the keyword "compile" is made
 name: Compile MEX
 on:
   workflow_dispatch:
-  push:
 
 jobs:
   compile_mex:
