@@ -1,68 +1,67 @@
 # compile matlab when a commit with the keyword "compile" is made
 name: Compile MEX
 on:
-    workflow_dispatch:
-    push:
+  workflow_dispatch:
+  push:
 
 jobs:
-    compile_mex:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os: [ubuntu-latest, windows-latest, macos-13] # macos-latest throws errors when compiling mex
-                include:
-                    - os: ubuntu-latest
-                      mex_ext: mexa64
-                    - os: windows-latest
-                      mex_ext: mexw64
-                    - os: macos-13
-                      mex_ext: mexmaci64
+  compile_mex:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-13] # macos-latest throws errors when compiling mex
+        include:
+          - os: ubuntu-latest
+            mex_ext: mexa64
+          - os: windows-latest
+            mex_ext: mexw64
+          - os: macos-13
+            mex_ext: mexmaci64
 
-        steps:
-            - name: Set up MATLAB
-              uses: matlab-actions/setup-matlab@v2
-            - name: Checkout SPM
-              uses: actions/checkout@v4
-              with:
-                  repository: spm/spm
-            - name: Compile MEX files
-              run: |
-                make -C src distclean
-                make -C src
-                make -C src install
-            - name: Upload Artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: spm-matlab-${{ matrix.os }}
-                  path: ./**/*.${{ matrix.mex_ext }}
-                  retention-days: 1
+    steps:
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v2
+      - name: Checkout SPM
+        uses: actions/checkout@v4
+        with:
+          repository: spm/spm
+      - name: Compile MEX files
+        run: |
+          make -C src distclean
+          make -C src
+          make -C src install
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: spm-matlab-${{ matrix.os }}
+          path: ./**/*.${{ matrix.mex_ext }}
+          retention-days: 1
 
+  add_artifacts_to_spm:
+    runs-on: ubuntu-latest
+    needs: compile_mex
+    steps:
+      - name: Checkout SPM
+        uses: actions/checkout@v4
+        with:
+          repository: spm/spm
+      - name: Download Linux Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spm-matlab-ubuntu-latest
 
-    add_artifacts_to_spm:
-        runs-on: ubuntu-latest
-        needs: compile_mex
-        steps:
-            - name: Checkout SPM
-              uses: actions/checkout@v4
-              with:
-                  repository: spm/spm                  
-            - name: Download Linux Artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: spm-matlab-ubuntu-latest
+      - name: Download macOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spm-matlab-macos-13
 
-            - name: Download macOS Artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: spm-matlab-macos-13
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spm-matlab-windows-latest
 
-            - name: Download Windows Artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: spm-matlab-windows-latest
-
-            - name: Upload SPM with mex files as Artifact # Avoid to upload files and folders starting with .
-              uses: actions/upload-artifact@v4
-              with:
-                  name: spm-matlab
-                  path: .
+      - name: Upload SPM with mex files as Artifact # Avoid to upload files and folders starting with .
+        uses: actions/upload-artifact@v4
+        with:
+          name: spm-matlab
+          path: .
