@@ -1,0 +1,21 @@
+# compile matlab when a commit with the keyword "compile" is made
+name: Compile MATLAB
+on:
+    workflow_dispatch:
+    push:
+
+jobs:
+    compile_matlab:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Set up MATLAB
+              uses: matlab-actions/setup-matlab@v1
+            - name: Checkout spm/spm/
+              uses: actions/checkout@v3
+              with:
+                  repository: spm/spm
+            - name: Compile MEX files
+              run: |
+                make -C src distclean
+                make -C src
+                make -C src install
