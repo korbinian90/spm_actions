@@ -48,6 +48,7 @@ jobs:
           token: ${{ secrets.TESTS_DATA_REPO_TOKEN }}
           path: tests/data
           lfs: true
+          ref: main
       - name: Run regression tests with existing MEX files
         uses: matlab-actions/run-command@v1
         with:
