@@ -1,7 +1,6 @@
 name: Build Matlab Standalone
 on:
   workflow_dispatch:
-  push:
 
 jobs:
   build_matlab_standalone:

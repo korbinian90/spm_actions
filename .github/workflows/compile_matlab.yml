@@ -1,20 +1,17 @@
 name: Compile MEX
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   compile_mex:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13] # macos-latest throws errors when compiling mex
+        os: [macos-latest] # macos-latest throws errors when compiling mex
         include:
-          - os: ubuntu-latest
-            mex_ext: mexa64
-          - os: windows-latest
-            mex_ext: mexw64
-          - os: macos-13
-            mex_ext: mexmaci64
+          - os: macos-latest
+            mex_ext: mexmaca64
 
     steps:
       - name: Set up MATLAB
@@ -22,7 +19,8 @@ jobs:
       - name: Checkout SPM
         uses: actions/checkout@v4
         with:
-          repository: spm/spm
+          repository: korbinian90/spm
+          ref: build_test
 
       - name: Delete old MEX files on Ubuntu and Mac
         if: matrix.os != 'windows-latest'
