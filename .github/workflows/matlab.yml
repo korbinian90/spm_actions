@@ -27,13 +27,13 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - name: Set up MATLAB (legacy)
-        uses: matlab-actions/setup-matlab@v1
-        if: ${{matrix.version == 'R2020a'}} || ${{matrix.version == 'R2020b'}}
+        if: ${{matrix.version == 'R2020a'}}
+        uses: matlab-actions/setup-matlab@v1        
         with:
           release: ${{matrix.version}}
       - name: Set up MATLAB
+        if: ${{matrix.version != 'R2020a'}}
         uses: matlab-actions/setup-matlab@v2
-        if: ${{matrix.version != 'R2020a'}} && ${{matrix.version != 'R2020b'}}
         with:
           release: ${{matrix.version}}
       - name: Check out repository
