@@ -2,6 +2,8 @@ name: Compile MEX
 on:
   workflow_dispatch:
   push:
+    paths:
+      - '.github/workflows/compile_matlab.yml'
 
 jobs:
   compile_mex:
