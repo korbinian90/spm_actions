@@ -67,12 +67,12 @@ jobs:
           command: addpath(pwd); results = spm_tests('class','unit','display',true); assert(all(~[results.Failed]));
       - name: Compile MEX files
         run: |
-          make -C src debug
-          # make -C src
-          # make -C src install
-          # make -C src external-distclean
-          # make -C src external
-          # make -C src external-install
+          make -C src distclean
+          make -C src
+          make -C src install
+          make -C src external-distclean
+          make -C src external
+          make -C src external-install
       - name: Get MEX extension on Linux/macOS
         if: runner.os != 'Windows'
         run: echo "MEXEXT=$(mexext)" >> $GITHUB_ENV
