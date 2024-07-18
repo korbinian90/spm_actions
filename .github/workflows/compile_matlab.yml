@@ -43,7 +43,7 @@ jobs:
 
       - name: Compile MEX files
         run: |
-          make -C src debug
+          make -C src debug ARCH=aarch64
           # make -C src distclean
           # make -C src
           # make -C src install
