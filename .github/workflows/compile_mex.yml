@@ -3,7 +3,10 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/compile_mex.yml'
+      - '*.c'
+      - '*.h'
+      - '*.cpp'
+      - '*.hpp'
 
 jobs:
   compile_mex:
@@ -36,12 +39,7 @@ jobs:
 
       - name: Delete old MEX files on Windows
         if: matrix.os == 'windows-latest'
-        run: |
-            $count = Get-ChildItem -Path .\ -Recurse -Include *.mex* | Measure-Object | Select-Object -ExpandProperty Count
-            Write-Output "Number of .mex* files before deletion: $count"
-            Get-ChildItem -Path .\ -Recurse -Include *.mex* | Remove-Item -Force
-            $count = Get-ChildItem -Path .\ -Recurse -Include *.mex* | Measure-Object | Select-Object -ExpandProperty Count
-            Write-Output "Number of .mex* files after deletion: $count"
+        run: Get-ChildItem -Path .\ -Recurse -Include *.mex* | Remove-Item -Force
 
       - name: Compile MEX files
         run: |
@@ -59,7 +57,7 @@ jobs:
           path: ./**/*.${{ matrix.mex_ext }}
           retention-days: 1
 
-  add_artifacts_to_spm:
+  collect_mex_files:
     runs-on: ubuntu-latest
     needs: compile_mex
     steps:
@@ -83,8 +81,8 @@ jobs:
         with:
           name: spm-mex-windows-latest
 
-      - name: Upload SPM with mex files as Artifact
+      - name: Upload all mex files as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: spm-matlab
+          name: spm-mex-all
           path: .
