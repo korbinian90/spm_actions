@@ -18,6 +18,8 @@ jobs:
             mex_ext: mexmaci64
           - os: macos-latest
             mex_ext: mexmaca64
+          - os: windows-latest
+            mex_ext: mexw64
 
     steps:
       - name: Set up MATLAB
