@@ -43,14 +43,14 @@ jobs:
         run: |
           echo "ZIP_ENDING=tar.gz" >> $GITHUB_ENV
           echo "ZIP_TYPE=gzip" >> $GITHUB_ENV
-          mv standalone standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}
+          mv ../standalone standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}
           tar -vczf standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}.tar.gz standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
           echo "ZIP_ENDING=zip" >> $env:GITHUB_ENV
           echo "ZIP_TYPE=zip" >> $env:GITHUB_ENV
-          Compress-Archive -Path 'standalone/*' -DestinationPath 'standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}.zip'
+          Compress-Archive -Path '../standalone/*' -DestinationPath 'standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}.zip'
       
       - name: Upload release
         uses: actions/upload-release-asset@v1
