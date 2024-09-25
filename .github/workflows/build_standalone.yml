@@ -60,6 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./mritools_${{ matrix.os }}_${{ steps.version.outputs.version }}.${{ env.ZIP_ENDING }}
-          asset_name: mritools_${{ matrix.os }}_${{ steps.version.outputs.version }}.${{ env.ZIP_ENDING }}
+          asset_path: ./standalone_${{ matrix.os }}_${{ steps.version.outputs.version }}.${{ env.ZIP_ENDING }}
+          asset_name: standalone_${{ matrix.os }}_${{ steps.version.outputs.version }}.${{ env.ZIP_ENDING }}
           asset_content_type: application/${{ env.ZIP_TYPE }}
