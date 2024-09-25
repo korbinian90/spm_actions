@@ -33,3 +33,5 @@ jobs:
             addpath(genpath('.'));
             savepath;
             spm_make_standalone
+      - name: Start Tmate session
+        uses: mxschmitt/action-tmate@v3
