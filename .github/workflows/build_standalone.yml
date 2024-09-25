@@ -18,7 +18,7 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v2
         with:
-          products: Matlab_Compiler
+          products: MATLAB_Compiler
           cache: true
       - name: Checkout SPM
         uses: actions/checkout@v4
