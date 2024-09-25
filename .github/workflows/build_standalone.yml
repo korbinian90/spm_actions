@@ -2,6 +2,8 @@ name: Build Matlab Standalone
 on:
   workflow_dispatch:
   push:
+    tags-ignore:
+      - '*'
     paths:
       - '.github/workflows/build_standalone.yml'
   release:

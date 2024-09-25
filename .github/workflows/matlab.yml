@@ -1,7 +1,9 @@
 name: Tests
 on:
   workflow_dispatch:
-  push:
+  push:    
+    tags-ignore:
+      - '*'
     paths:
       - '.github/workflows/matlab.yml'
 
