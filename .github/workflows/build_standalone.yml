@@ -1,13 +1,8 @@
 name: Build Matlab Standalone
 on:
-  workflow_dispatch:
   push:
-    tags-ignore:
-      - '*'
-    paths:
-      - '.github/workflows/build_standalone.yml'
-  release:
-    types: [published]
+    tags:
+      - "v*.*.*"
 
 env:
   MLM_LICENSE_TOKEN: ${{ secrets.MATLAB_BATCH_TOKEN }}
@@ -52,14 +47,10 @@ jobs:
         run: |
           echo "ZIP_ENDING=zip" >> $env:GITHUB_ENV
           echo "ZIP_TYPE=zip" >> $env:GITHUB_ENV
-          Compress-Archive -Path '../standalone/*' -DestinationPath 'standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}.zip'
-      
-      - name: Upload release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          Compress-Archive -Path '../standalone/*' -DestinationPath 'standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}.zip
+          
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./standalone_${{ matrix.os }}_${{ steps.version.outputs.version }}.${{ env.ZIP_ENDING }}
-          asset_name: standalone_${{ matrix.os }}_${{ steps.version.outputs.version }}.${{ env.ZIP_ENDING }}
-          asset_content_type: application/${{ env.ZIP_TYPE }}
+          files: standalone*.${{ env.ZIP_ENDING }}
+          
