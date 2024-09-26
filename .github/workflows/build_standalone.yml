@@ -65,18 +65,14 @@ jobs:
       - name: Compress Unix
         if: ${{ runner.os != 'Windows' }}
         run: |
-          echo "ZIP_ENDING=tar.gz" >> $GITHUB_ENV
-          echo "ZIP_TYPE=gzip" >> $GITHUB_ENV
-          mv ../standalone spm__${{ github.event.release.tag_name }}_${{ matrix.os_name }}_${{ matrix.version }}
-          tar -vczf spm__${{ github.event.release.tag_name }}_${{ matrix.os_name }}_${{ matrix.version }}.tar.gz spm__${{ github.event.release.tag_name }}_${{ matrix.os_name }}_${{ matrix.version }}
+          mv ../standalone spm__${{ github.ref }}_${{ matrix.os_name }}_${{ matrix.version }}
+          tar -vczf spm__${{ github.ref }}_${{ matrix.os_name }}_${{ matrix.version }}.tar.gz spm__${{ github.ref }}_${{ matrix.os_name }}_${{ matrix.version }}
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
-          echo "ZIP_ENDING=zip" >> $env:GITHUB_ENV
-          echo "ZIP_TYPE=zip" >> $env:GITHUB_ENV
-          Compress-Archive -Path '../standalone/*' -DestinationPath 'spm__${{ github.event.release.tag_name }}_${{ matrix.os_name }}_${{ matrix.version }}.zip
+          Compress-Archive -Path '../standalone/*' -DestinationPath 'spm__${{ github.ref }}_${{ matrix.os_name }}_${{ matrix.version }}.zip
           
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: spm*.${{ env.ZIP_ENDING }}
+          files: spm*[.zip|.tar.gz]
