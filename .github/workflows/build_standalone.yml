@@ -70,7 +70,7 @@ jobs:
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
-          Compress-Archive -Path '../standalone/*' -DestinationPath 'spm__${{ github.ref }}_${{ matrix.os_name }}_${{ matrix.version }}.zip
+          Compress-Archive -Path '../standalone/*' -DestinationPath 'spm__${{ github.ref }}_${{ matrix.os_name }}_${{ matrix.version }}.zip'
           
       - name: Release
         uses: softprops/action-gh-release@v2
