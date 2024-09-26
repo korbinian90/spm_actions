@@ -75,4 +75,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: spm*[.zip|.tar.gz]
+          files: |
+            spm*.zip
+            spm*.tar.gz
