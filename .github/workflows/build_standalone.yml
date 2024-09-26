@@ -14,14 +14,29 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        version: ["R2021a", "R2021b", "R2022a", "R2022b", "R2023a", "R2023b", "R2024a", "R2024b"]
+        os: ["ubuntu-latest", "macos-13", "macos-latest", "windows-latest"] # macos-13 has Intel architecture, macos-latest has Apple Silicon
+        exclude:
+          - os: windows-latest
+            version: "R2021a" # Compiler not available
+          - os: windows-latest
+            version: "R2021b" # Compiler not available
+          - os: macos-latest
+            version: "R2021a" # Apple Silicon version not available
+          - os: macos-latest
+            version: "R2021b" # Apple Silicon version not available
+          - os: macos-latest
+            version: "R2022a" # Apple Silicon version not available
+          - os: macos-latest
+            version: "R2022b" # Apple Silicon version not available
+          - os: macos-latest
+            version: "R2023a" # Apple Silicon version not available
 
     steps:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v2
         with:
           products: MATLAB_Compiler
-          cache: true
       - name: Checkout SPM
         uses: actions/checkout@v4
         with:
@@ -36,20 +51,35 @@ jobs:
             savepath;
             spm_make_standalone
 
+      # Define OS names
+      - name: Define OS Names
+        run: |
+          if [ "${{ matrix.os }}" == "macos-latest" ]; then
+            echo "OS_NAME=macOS_ARM" >> $GITHUB_ENV
+          if [ "${{ matrix.os }}" == "macos-13" ]; then
+            echo "OS_NAME=macOS_Intel" >> $GITHUB_ENV
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            echo "OS_NAME=Windows" >> $GITHUB_ENV
+          elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            echo "OS_NAME=Linux" >> $GITHUB_ENV
+          else
+            echo "OS_NAME=Unknown OS"
+          fi
+
       # Compress to tar.gz or zip
       - name: Compress Unix
         if: ${{ runner.os != 'Windows' }}
         run: |
           echo "ZIP_ENDING=tar.gz" >> $GITHUB_ENV
           echo "ZIP_TYPE=gzip" >> $GITHUB_ENV
-          mv ../standalone standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}
-          tar -vczf standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}.tar.gz standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}
+          mv ../standalone spm__${{ github.event.release.tag_name }}_${{ env.OS_NAME }}_${{ matrix.version }}
+          tar -vczf spm__${{ github.event.release.tag_name }}_${{ env.OS_NAME }}_${{ matrix.version }}.tar.gz spm__${{ github.event.release.tag_name }}_${{ env.OS_NAME }}_${{ matrix.version }}
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
           echo "ZIP_ENDING=zip" >> $env:GITHUB_ENV
           echo "ZIP_TYPE=zip" >> $env:GITHUB_ENV
-          Compress-Archive -Path '../standalone/*' -DestinationPath 'standalone_${{ matrix.os }}_${{ github.event.release.tag_name }}.zip
+          Compress-Archive -Path '../standalone/*' -DestinationPath 'spm__${{ github.event.release.tag_name }}_${{ env.OS_NAME }}_${{ matrix.version }}.zip
           
       - name: Release
         uses: softprops/action-gh-release@v2
