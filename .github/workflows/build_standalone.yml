@@ -6,6 +6,8 @@ on:
 
 env:
   MLM_LICENSE_TOKEN: ${{ secrets.MATLAB_BATCH_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
 jobs:
   build_matlab_standalone:
     name: Build Matlab Standalone
