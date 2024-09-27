@@ -66,7 +66,8 @@ jobs:
         if: ${{ runner.os != 'Windows' }}
         run: |
           mv ../standalone spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
-          tar -vczf spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}.tar.gz spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
+          zip -r spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}.zip spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
+
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
@@ -75,6 +76,4 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            spm*.zip
-            spm*.tar.gz
+          files: spm*.zip
