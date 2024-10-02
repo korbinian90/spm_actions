@@ -15,8 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["R2021a", "R2021b", "R2022a", "R2022b", "R2023a", "R2023b", "R2024a", "R2024b"]
-        os: ["ubuntu-latest", "macos-13", "macos-latest", "windows-latest"] # macos-13 has Intel architecture, macos-latest has Apple Silicon
+        version: ["R2024a"] #["R2021a", "R2021b", "R2022a", "R2022b", "R2023a", "R2023b", "R2024a", "R2024b"]
+        os: ["ubuntu-latest"] #, "macos-13", "macos-latest", "windows-latest"] # macos-13 has Intel architecture, macos-latest has Apple Silicon
         include:
           - os: ubuntu-latest
             os_name: Linux
@@ -58,16 +58,17 @@ jobs:
         run: |
           matlab_executable=$(which matlab)
           matlab_base_path=$(dirname "$matlab_executable")
-          echo "matlab_base_path=${matlab_base_path}" >> $GITHUB_ENV
+          glnxa64_path="${matlab_base_path}/glnxa64"
+          glnxa64_os_path="${matlab_base_path}/../sys/os/glnxa64"
+          echo "LD_LIBRARY_PATH=${glnxa64_path}:${glnxa64_os_path}:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
       - name: Build Matlab Standalone
         uses: matlab-actions/run-command@v2
         with:
           command: |
-            if strcmp(computer,'GLNXA64')
-              setenv('LD_LIBRARY_PATH', '${{ENV.matlab_base_path}}/bin/glnxa64:${{ENV.matlab_base_path}}/sys/os/glnxa64');
-            end
+            ld_library_path = getenv('LD_LIBRARY_PATH')
+            disp(ld_library_path)
             addpath(genpath('.'));
             savepath;
             spm_make_standalone
