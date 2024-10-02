@@ -52,18 +52,25 @@ jobs:
         with:
           repository: spm/spm
 
+      # Step to create MATLAB executable path for Linux environments
+      - name: Create MATLAB Executable Path
+        if: ${{ runner.os == 'Linux' }} # This step runs only on Linux
+        run: |
+          matlab_executable=$(which matlab)
+          matlab_base_path=$(dirname "$matlab_executable")
+          echo "matlab_base_path=${matlab_base_path}" >> $GITHUB_ENV
+
       # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
       - name: Build Matlab Standalone
         uses: matlab-actions/run-command@v2
         with:
           command: |
-            setenv('LD_LIBRARY_PATH', '/usr/local/MATLAB/${{matrix.version}}/bin/glnxa64:/usr/local/MATLAB/${{matrix.version}}/sys/os/glnxa64');
+            if strcmp(computer,'GLNXA64)
+              setenv('LD_LIBRARY_PATH', '${{ENV.matlab_base_path}}/bin/glnxa64:${{ENV.matlab_base_path}}/sys/os/glnxa64');
+            end
             addpath(genpath('.'));
             savepath;
             spm_make_standalone
-
-      - name: Start Tmate session
-        uses: mxschmitt/action-tmate@v3
 
       # Compress to tar.gz or zip
       - name: Compress Unix
