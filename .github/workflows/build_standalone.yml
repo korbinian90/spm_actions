@@ -65,7 +65,7 @@ jobs:
         uses: matlab-actions/run-command@v2
         with:
           command: |
-            if strcmp(computer,'GLNXA64)
+            if strcmp(computer,'GLNXA64')
               setenv('LD_LIBRARY_PATH', '${{ENV.matlab_base_path}}/bin/glnxa64:${{ENV.matlab_base_path}}/sys/os/glnxa64');
             end
             addpath(genpath('.'));
