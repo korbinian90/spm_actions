@@ -15,10 +15,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["R2021a", "R2021b", "R2022a", "R2022b", "R2023a", "R2023b", "R2024a", "R2024b"]
-        os: ["ubuntu-20.04", "macos-13", "macos-latest", "windows-latest"] # macos-13 has Intel architecture, macos-latest has Apple Silicon
+        version: ["R2021a"] # , "R2021b", "R2022a", "R2022b", "R2023a", "R2023b", "R2024a", "R2024b"]
+        os: ["ubuntu-latest"] #, "macos-13", "macos-latest", "windows-latest"] # macos-13 has Intel architecture, macos-latest has Apple Silicon
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             os_name: Linux
           - os: macos-13
             os_name: macOS_Intel
@@ -57,9 +57,13 @@ jobs:
         uses: matlab-actions/run-command@v2
         with:
           command: |
+            setenv('LD_LIBRARY_PATH', '/usr/local/MATLAB/${{matrix.version}}/bin/glnxa64:/usr/local/MATLAB/${{matrix.version}}/sys/os/glnxa64');
             addpath(genpath('.'));
             savepath;
             spm_make_standalone
+
+      - name: Start Tmate session
+        uses: mxschmitt/action-tmate@v3
 
       # Compress to tar.gz or zip
       - name: Compress Unix
