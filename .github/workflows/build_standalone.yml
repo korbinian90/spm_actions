@@ -57,7 +57,7 @@ jobs:
           # Get MATLAB installation path (e.g., /opt/hostedtoolcache/MATLAB/2024.2.999/x64/bin/matlab)
           matlab_path=$(which matlab)
           # display matlab_path
-          echo "MATLAB_PATH=$matlab_path" >> $GITHUB_ENV
+          echo "Matlab path: $matlab_path"
           # Go up two levels to get the folder containing the version (e.g., /opt/hostedtoolcache/MATLAB/2024.2.999)
           matlab_install_dir=$(dirname "$(dirname "$(dirname "$matlab_path")")")
           # Extract the base directory name (e.g., "2024.2.999") and use the first part as the version (R2024b)
