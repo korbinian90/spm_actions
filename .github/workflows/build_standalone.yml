@@ -78,8 +78,10 @@ jobs:
       - name: Verify Linking
         if: ${{ runner.os == 'Linux' }}
         run: |
-          ldd spm12 | grep libstdc++
           ldd standalone/spm12 | grep libstdc++
+      - name: Verify Linking 2
+        if: ${{ runner.os == 'Linux' }}
+        run: |
           ldd ../standalone/spm12 | grep libstdc++
 
       # Compress to tar.gz or zip
