@@ -79,7 +79,7 @@ jobs:
           # Go up two levels to get the folder containing the version (e.g., C:\hostedtoolcache\windows\MATLAB\2024.2.999)
           $matlab_install_dir = echo "$matlab_path" | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ }
           # Extract the base directory name (e.g., "R2024b")
-          $matlab_version = Split-Path "$matlab_install_dir" -Leaf
+          $matlab_base_version = Split-Path "$matlab_install_dir" -Leaf
           # Split the major and minor versions
           $parts = $matlab_base_version -split '\.'
           $major = $parts[0]
