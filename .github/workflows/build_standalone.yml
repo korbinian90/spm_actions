@@ -74,12 +74,22 @@ jobs:
       - name: Extract MATLAB Version for Windows
         if: runner.os == 'Windows'
         run: |
-          # Get MATLAB installation path (e.g., C:\hostedtoolcache\windows\MATLAB\R2024b\bin\matlab.exe)
+          # Get MATLAB installation path (e.g., C:\hostedtoolcache\windows\MATLAB\2024.2.999\x64\bin\matlab.exe)
           $matlab_path = (Get-Command matlab).Source
-          # Go up two levels to get the folder containing the version (e.g., C:\hostedtoolcache\windows\MATLAB\R2024b)
+          # Go up two levels to get the folder containing the version (e.g., C:\hostedtoolcache\windows\MATLAB\2024.2.999)
           $matlab_install_dir = echo "$matlab_path" | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ }
           # Extract the base directory name (e.g., "R2024b")
           $matlab_version = Split-Path "$matlab_install_dir" -Leaf
+          # Split the major and minor versions
+          $parts = $matlab_base_version -split '\.'
+          $major = $parts[0]
+          $minor = $parts[1]
+          # Determine the MATLAB version based on the minor version number
+          if ($minor -eq "0" -or $minor -eq "1") {
+              $matlab_version = "R$major" + "a"
+          } elseif ($minor -eq "2" -or $minor -eq "3") {
+              $matlab_version = "R$major" + "b"
+          }
           echo "Extracted MATLAB Version: $matlab_version"
           echo "MATLAB_VERSION=$matlab_version" >> $GITHUB_ENV
 
