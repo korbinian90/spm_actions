@@ -45,16 +45,19 @@ jobs:
 
     steps:
       - name: Set up MATLAB
+        id: setup_matlab
         uses: matlab-actions/setup-matlab@v2
         with:
           release: ${{matrix.version}}
           products: MATLAB_Compiler
-      
-      - name: Get MATLAB Version
+
+      - name: Extract MATLAB Version from Log
         run: |
-          matlab_version=$(matlab -batch "disp(version('-release'))")
+          # Use grep to find the version string from the log and extract it
+          matlab_version=$(grep -oP 'R[0-9]{4}[ab]' <<< "${{ steps.setup_matlab.outputs.setup_log }}")
           echo "MATLAB Version Installed: $matlab_version"
           echo "MATLAB_VERSION=$matlab_version" >> $GITHUB_ENV
+
 
       - name: Checkout SPM
         uses: actions/checkout@v4
