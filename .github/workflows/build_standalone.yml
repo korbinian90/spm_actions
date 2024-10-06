@@ -77,7 +77,7 @@ jobs:
           # Get MATLAB installation path (e.g., C:\hostedtoolcache\windows\MATLAB\R2024b\bin\matlab.exe)
           $matlab_path = (Get-Command matlab).Source
           # Go up two levels to get the folder containing the version (e.g., C:\hostedtoolcache\windows\MATLAB\R2024b)
-          $matlab_install_dir = echo "$matlab_path" | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ }
+          $matlab_install_dir = echo "$matlab_path" | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ }
           # Extract the base directory name (e.g., "R2024b")
           $matlab_version = Split-Path "$matlab_install_dir" -Leaf
           echo "Extracted MATLAB Version: $matlab_version"
