@@ -57,7 +57,7 @@ jobs:
           # Get MATLAB installation path (e.g., /opt/hostedtoolcache/MATLAB/2024.2.999/x64/bin/matlab)
           matlab_path=$(which matlab)
           # Go up two levels to get the folder containing the version (e.g., /opt/hostedtoolcache/MATLAB/2024.2.999)
-          matlab_install_dir=$(dirname "$(dirname "$matlab_path")")
+          matlab_install_dir= $(dirname "$(dirname "$(dirname "$matlab_path")")")
           # Extract the base directory name (e.g., "2024.2.999") and use the first part as the version (R2024b)
           matlab_version=$(basename "$matlab_install_dir" | cut -d. -f1 | sed 's/^/R/')
           echo "Extracted MATLAB Version: $matlab_version"
@@ -67,7 +67,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           # Get MATLAB installation path (e.g., C:\hostedtoolcache\windows\MATLAB\R2024b\bin\matlab.exe)
-          matlab_path=$(where matlab)
+          $matlab_path = (Get-Command matlab).Source
           # Go up two levels to get the folder containing the version (e.g., C:\hostedtoolcache\windows\MATLAB\R2024b)
           matlab_install_dir=$(echo "$matlab_path" | ForEach-Object { Split-Path -Parent $_ } | ForEach-Object { Split-Path -Parent $_ })
           # Extract the base directory name (e.g., "R2024b")
