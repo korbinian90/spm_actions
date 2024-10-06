@@ -59,7 +59,15 @@ jobs:
           # Go up two levels to get the folder containing the version (e.g., /opt/hostedtoolcache/MATLAB/2024.2.999)
           matlab_install_dir=$(dirname "$(dirname "$(dirname "$matlab_path")")")
           # Extract the base directory name (e.g., "2024.2.999") and use the first part as the version (R2024b)
-          matlab_version=$(basename "$matlab_install_dir" | cut -d. -f1 | sed 's/^/R/')
+          matlab_base_version=$(basename "$matlab_install_dir" | cut -d. -f1,2)
+          # Split the major and minor versions
+          IFS='.' read -r major minor <<< "$matlab_base_version"
+          if [[ "$minor" == "1" ]]; then
+              matlab_version="R${major}a"
+          elif [[ "$minor" == "2" ]]; then
+              matlab_version="R${major}b"
+          fi
+
           echo "Extracted MATLAB Version: $matlab_version"
           echo "MATLAB_VERSION=$matlab_version" >> $GITHUB_ENV
 
