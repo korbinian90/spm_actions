@@ -119,7 +119,7 @@ jobs:
               $matlab_version = "R$major" + "b"
           }
           echo "Extracted MATLAB Version: $matlab_version"
-          echo "MATLAB_VERSION=$matlab_version" >> $GITHUB_ENV
+          "MATLAB_VERSION=$matlab_version" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Checkout SPM
         uses: actions/checkout@v4
