@@ -106,19 +106,19 @@ jobs:
             addpath(genpath('.'));
             savepath;
             spm_make_standalone
-            
+
       # Compress to tar.gz or zip
       - name: Compress Unix
         if: ${{ runner.os != 'Windows' }}
         run: |
-          mv ../standalone spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}
-          zip -r spm_${{ github.ref_name }}_${{ env.MATLAB_VERSION }}_${{ matrix.version }}.zip spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
+          mv ../standalone spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}
+          zip -r spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}
 
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
-          Compress-Archive -Path '../standalone/*' -DestinationPath 'spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}.zip'
-          
+          Compress-Archive -Path '../standalone/*' -DestinationPath 'spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip'
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
