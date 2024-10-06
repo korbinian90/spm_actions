@@ -62,20 +62,25 @@ jobs:
           glnxa64_path="${matlab_base_path}/glnxa64"
           glnxa64_os_path="${matlab_base_path}/../sys/os/glnxa64"
           echo "LD_LIBRARY_PATH=${glnxa64_path}:${glnxa64_os_path}:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "LD_PRELOAD=${glnxa64_os_path}/libstdc++.so.6" >> $GITHUB_ENV
 
       # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
       - name: Build Matlab Standalone
         uses: matlab-actions/run-command@v2
         with:
           command: |
-            ld_library_path = getenv('LD_LIBRARY_PATH')
-            disp(ld_library_path)
+            disp(getenv('LD_LIBRARY_PATH'))
+            disp(getenv('LD_PRELOAD'))
             addpath(genpath('.'));
             savepath;
             spm_make_standalone
-
-      - name: Start Tmate session
-        uses: mxschmitt/action-tmate@v3
+            
+      - name: Verify Linking
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          ldd spm12 | grep libstdc++
+          ldd standalone/spm12 | grep libstdc++
+          ldd ../standalone/spm12 | grep libstdc++
 
       # Compress to tar.gz or zip
       - name: Compress Unix
