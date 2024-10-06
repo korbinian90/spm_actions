@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["R2024a"] #["R2021a", "R2021b", "R2022a", "R2022b", "R2023a", "R2023b", "R2024a", "R2024b"]
+        version: ["latest"] #["R2021a", "R2021b", "R2022a", "R2022b", "R2023a", "R2023b", "R2024a", "R2024b"]
         os: ["ubuntu-latest"] #, "macos-13", "macos-latest", "windows-latest"] # macos-13 has Intel architecture, macos-latest has Apple Silicon
         include:
           - os: ubuntu-latest
@@ -49,6 +49,13 @@ jobs:
         with:
           release: ${{matrix.version}}
           products: MATLAB_Compiler
+      
+      - name: Get MATLAB Version
+        run: |
+          matlab_version=$(matlab -batch "disp(version('-release'))")
+          echo "MATLAB Version Installed: $matlab_version"
+          echo "MATLAB_VERSION=$matlab_version" >> $GITHUB_ENV
+
       - name: Checkout SPM
         uses: actions/checkout@v4
         with:
@@ -85,8 +92,8 @@ jobs:
       - name: Compress Unix
         if: ${{ runner.os != 'Windows' }}
         run: |
-          mv ../standalone spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
-          zip -r spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}.zip spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
+          mv ../standalone spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ ENV.MATLAB_VERSION }}
+          zip -r spm_${{ github.ref_name }}_${{ ENV.MATLAB_VERSION }}_${{ matrix.version }}.zip spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
 
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
