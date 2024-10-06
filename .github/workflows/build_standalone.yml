@@ -92,8 +92,8 @@ jobs:
       - name: Compress Unix
         if: ${{ runner.os != 'Windows' }}
         run: |
-          mv ../standalone spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ ENV.MATLAB_VERSION }}
-          zip -r spm_${{ github.ref_name }}_${{ ENV.MATLAB_VERSION }}_${{ matrix.version }}.zip spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
+          mv ../standalone spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}
+          zip -r spm_${{ github.ref_name }}_${{ env.MATLAB_VERSION }}_${{ matrix.version }}.zip spm_${{ github.ref_name }}_${{ matrix.os_name }}_${{ matrix.version }}
 
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
