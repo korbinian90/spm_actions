@@ -48,7 +48,6 @@ jobs:
         uses: matlab-actions/setup-matlab@v2
         with:
           products: MATLAB_Compiler
-          release: version
       - name: Checkout SPM
         uses: actions/checkout@v4
         with:
@@ -77,10 +76,6 @@ jobs:
             spm_make_standalone
             
       - name: Verify Linking
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          ldd standalone/spm12 | grep libstdc++
-      - name: Verify Linking 2
         if: ${{ runner.os == 'Linux' }}
         run: |
           ldd ../standalone/spm12 | grep libstdc++
