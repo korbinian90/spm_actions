@@ -62,8 +62,8 @@ jobs:
           matlab_base_path=$(dirname "$matlab_executable")
           glnxa64_path="${matlab_base_path}/glnxa64"
           glnxa64_os_path="${matlab_base_path}/../sys/os/glnxa64"
-          echo "LD_LIBRARY_PATH=${glnxa64_path}:${glnxa64_os_path}:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-          echo "LD_PRELOAD=${glnxa64_os_path}/libstdc++.so.6" >> $GITHUB_ENV
+          # echo "LD_LIBRARY_PATH=${glnxa64_path}:${glnxa64_os_path}:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          # echo "LD_PRELOAD=${glnxa64_os_path}/libstdc++.so.6" >> $GITHUB_ENV
 
       # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
       - name: Build Matlab Standalone
