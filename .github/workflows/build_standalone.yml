@@ -71,7 +71,6 @@ jobs:
           elif [[ "$minor" == "2" ]]; then
               matlab_version="R${major}b"
           fi
-
           echo "Extracted MATLAB Version: $matlab_version"
           echo "MATLAB_VERSION=$matlab_version" >> $GITHUB_ENV
 
@@ -95,7 +94,6 @@ jobs:
           elif [[ "$minor" == "2" ]]; then
               matlab_version="R${major}b"
           fi
-
           echo "Extracted MATLAB Version: $matlab_version"
           echo "MATLAB_VERSION=$matlab_version" >> $GITHUB_ENV
 
@@ -113,9 +111,9 @@ jobs:
           $major = $parts[0]
           $minor = $parts[1]
           # Determine the MATLAB version based on the minor version number
-          if ($minor -eq "0" -or $minor -eq "1") {
+          if ($minor -eq "1") {
               $matlab_version = "R$major" + "a"
-          } elseif ($minor -eq "2" -or $minor -eq "3") {
+          } elseif ($minor -eq "2") {
               $matlab_version = "R$major" + "b"
           }
           echo "Extracted MATLAB Version: $matlab_version"
