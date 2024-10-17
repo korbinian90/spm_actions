@@ -159,19 +159,21 @@ jobs:
       - name: Compress Unix
         if: ${{ runner.os != 'Windows' }}
         run: |
-          mv ../standalone spm12
+          cd ..
+          mv standalone spm12
           zip -r spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip spm12
 
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
-          Rename-Item -Path '../standalone' -NewName 'spm12'
+          cd ..
+          Rename-Item -Path 'standalone' -NewName 'spm12'
           Compress-Archive -Path 'spm12' -DestinationPath 'spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip'
 
-      - name: Release Standalone
+      - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: spm*.zip
+          files: ../spm*.zip
 
       # 1) Delete spm*.zip 2) Zip up SPM
       - name: Create SPM zip (not standalone)
@@ -179,7 +181,7 @@ jobs:
         run: |
           rm spm*.zip
           zip -r spm_${{ github.ref_name }}.zip .
-          
+
       - name: Release SPM
         uses: softprops/action-gh-release@v2
         with:
