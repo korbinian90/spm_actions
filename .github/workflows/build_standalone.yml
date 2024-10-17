@@ -130,10 +130,15 @@ jobs:
           files: 'Contents.m'
           search-text: <version>
           replacement-text: ${{ github.ref_name }}
-      - name: Get the date
-        uses: ajilraju/actions-date@v0.1
-        with:
-          args: date +%d-%b-%Y
+      - name: Get the date Linux/Mac
+        if: runner.os != 'Windows'
+        run: |
+          echo "date=$(date '+%d-%b-%Y')" >> $GITHUB_ENV
+      - name: Get the date Windows
+        if: runner.os == 'Windows'
+        run: |
+          $date = Get-Date -Format "dd-MMM-yyyy"
+          echo "date=$date" >> $env:GITHUB_ENV
       - name: Set the date of compilation
         uses: richardrigutins/replace-in-files@v2
         with:
