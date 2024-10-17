@@ -182,7 +182,7 @@ jobs:
           cd ..
           rm spm*.zip
           rm -r spm12
-          mv spm_actions spm12
+          mv spm_actions/* spm12
           zip -r spm_${{ github.ref_name }}.zip spm12
 
       - name: Start Tmate session
