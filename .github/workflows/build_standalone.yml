@@ -180,14 +180,11 @@ jobs:
         if: runner.os == 'Linux' && matrix.version == 'latest'
         run: |
           cd ..
-          rm spm*.zip
-          rm -r spm12
-          mkdir spm12
+          rm spm*.zip # standalone zip
+          rm -r spm12 # standalone folder
+          mkdir spm12 # spm folder to release
           mv spm_actions/* spm12
           zip -r spm_${{ github.ref_name }}.zip spm12
-
-      - name: Start Tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Release SPM
         uses: softprops/action-gh-release@v2
