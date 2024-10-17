@@ -133,7 +133,7 @@ jobs:
       - name: Get the date
         uses: ajilraju/actions-date@v0.1
         with:
-          args: date '+%d-%b-%Y'
+          args: date +%d-%b-%Y
       - name: Set the date of compilation
         uses: richardrigutins/replace-in-files@v2
         with:
