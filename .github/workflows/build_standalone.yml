@@ -124,6 +124,22 @@ jobs:
         with:
           repository: spm/spm
 
+      - name: Set the SPM version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'Contents.m'
+          search-text: <version>
+          replacement-text: ${{ github.ref_name }}
+      - name: Get the date
+        run: |
+          echo "date=$(date + '%d-%b-%Y')" >> $GITHUB_ENV
+      - name: Set the date of compilation
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'Contents.m'
+          search-text: <date>
+          replacement-text: ${{ env.date }}
+
       # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
       - name: Build Matlab Standalone
         uses: matlab-actions/run-command@v2
