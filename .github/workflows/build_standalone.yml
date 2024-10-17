@@ -179,7 +179,7 @@ jobs:
       - name: Create SPM zip (not standalone)
         if: runner.os == 'Linux' && matrix.version == 'latest'
         run: |
-          rm spm*.zip
+          rm ../spm*.zip
           mv spm_actions spm12
           zip -r spm_${{ github.ref_name }}.zip spm12
 
