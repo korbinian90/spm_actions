@@ -146,6 +146,18 @@ jobs:
           search-text: <date>
           replacement-text: ${{ env.date }}
 
+      # 1) Delete spm*.zip 2) Zip up SPM 3) Release SPM
+      - name: Create SPM zip (not standalone)
+        if: runner.os == 'Linux' && matrix.version == 'latest'
+        run: |
+          cd ..
+          cp -r spm_actions spm12 # spm folder to release
+          zip -r spm_${{ github.ref_name }}.zip spm12
+      - name: Release SPM
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ../spm*.zip
+
       # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
       - name: Build Matlab Standalone
         uses: matlab-actions/run-command@v2
@@ -173,20 +185,4 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ../spm*.zip
-
-      # 1) Delete spm*.zip 2) Zip up SPM
-      - name: Create SPM zip (not standalone)
-        if: runner.os == 'Linux' && matrix.version == 'latest'
-        run: |
-          cd ..
-          rm spm*.zip # standalone zip
-          rm -r spm12 # standalone folder
-          mkdir spm12 # spm folder to release
-          mv spm_actions/* spm12
-          zip -r spm_${{ github.ref_name }}.zip spm12
-
-      - name: Release SPM
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ../spm*.zip
+          files: ../spm_standalone*.zip
