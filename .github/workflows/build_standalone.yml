@@ -187,4 +187,4 @@ jobs:
       - name: Release SPM
         uses: softprops/action-gh-release@v2
         with:
-          files: spm*.zip
+          files: ../spm*.zip
