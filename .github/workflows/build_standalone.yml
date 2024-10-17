@@ -128,8 +128,8 @@ jobs:
         uses: richardrigutins/replace-in-files@v2
         with:
           files: 'Contents.m'
-          search-text: <version>
-          replacement-text: ${{ github.ref_name }}
+          search-text: ' dev '
+          replacement-text: ' ${{ github.ref_name }} '
       - name: Get the date Linux/Mac
         if: runner.os != 'Windows'
         run: |
