@@ -181,7 +181,7 @@ jobs:
         run: |
           cd ..
           rm spm*.zip
-          mv spm_actions spm12
+          mv spm_actions/spm_actions spm12
           zip -r spm_${{ github.ref_name }}.zip spm12
 
       - name: Release SPM
