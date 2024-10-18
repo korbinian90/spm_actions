@@ -165,7 +165,7 @@ jobs:
           cd ..
           mv standalone spm12
           zip -r spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip spm12
-          zip -r spm_standalone_runtime.zip standalone_runtime
+          zip -r spm_standalone_runtime_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip standalone_runtime
 
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
