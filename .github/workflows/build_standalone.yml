@@ -155,11 +155,8 @@ jobs:
             savepath;
             spm_make_standalone;
             if ~isMATLABReleaseOlderThan("R2024b")
-              compiler.runtime.customInstaller('Runtime_${{ env.MATLAB_VERSION }}_for_spm_standalone_${{ github.ref_name }}', '../standalone/requiredMCRProducts.txt');
+              compiler.runtime.customInstaller('Runtime_${{ env.MATLAB_VERSION }}_for_spm_standalone_${{ github.ref_name }}', '../standalone/requiredMCRProducts.txt', OutputDir='../standalone_runtime');
             end
-
-      - name: Start Tmate session
-        uses: mxschmitt/action-tmate@v3
 
       # Compress to tar.gz or zip
       - name: Compress Unix
@@ -168,6 +165,7 @@ jobs:
           cd ..
           mv standalone spm12
           zip -r spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip spm12
+          zip -r spm_standalone_runtime.zip standalone_runtime
 
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
