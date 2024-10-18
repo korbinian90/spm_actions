@@ -155,7 +155,7 @@ jobs:
             savepath;
             spm_make_standalone;
             if ~isMATLABReleaseOlderThan("R2024b")
-              compiler.runtime.customInstaller('Runtime_${{ env.MATLAB_VERSION }}_for_spm_standalone_${{ github.ref_name }}', '../standalone/requiredMCRProducts.txt', OutputDir='../standalone_runtime');
+              compiler.runtime.customInstaller('Runtime_${{ env.MATLAB_VERSION }}_for_spm_standalone_${{ github.ref_name }}', '../standalone/requiredMCRProducts.txt', OutputDir='../runtime_installer');
             end
 
       # Compress to tar.gz or zip
@@ -164,16 +164,15 @@ jobs:
         run: |
           cd ..
           mv standalone spm12
-          zip -r spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip spm12
-          zip -r spm_standalone_runtime_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip standalone_runtime
+          mkdir runtime_installer
+          zip -r spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip spm12 runtime_installer
 
       - name: Compress Windows
         if: ${{ runner.os == 'Windows' }}
         run: |
           cd ..
           Rename-Item -Path 'standalone' -NewName 'spm12'
-          Compress-Archive -Path 'spm12' -DestinationPath 'spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip'
-          Compress-Archive -Path 'standalone_runtime' -DestinationPath 'spm_standalone_runtime_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip'
+          Compress-Archive -Path @('spm12', 'runtime_installer') -DestinationPath 'spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip'
 
       - name: Release
         uses: softprops/action-gh-release@v2
