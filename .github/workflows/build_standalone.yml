@@ -173,6 +173,7 @@ jobs:
           cd ..
           Rename-Item -Path 'standalone' -NewName 'spm12'
           Compress-Archive -Path 'spm12' -DestinationPath 'spm_standalone_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip'
+          Compress-Archive -Path 'standalone_runtime' -DestinationPath 'spm_standalone_runtime_${{ github.ref_name }}_${{ matrix.os_name }}_${{ env.MATLAB_VERSION }}.zip'
 
       - name: Release
         uses: softprops/action-gh-release@v2
