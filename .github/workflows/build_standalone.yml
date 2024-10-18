@@ -155,7 +155,7 @@ jobs:
             savepath;
             spm_make_standalone;
             if ~isMATLABReleaseOlderThan("R2024b")
-              compiler.runtime.customInstaller('Runtime_${{ env.MATLAB_VERSION }}_for_spm_standalone_${{ env.ref_name }}', 'standalone/requiredMCRProducts.txt');
+              compiler.runtime.customInstaller('Runtime_${{ env.MATLAB_VERSION }}_for_spm_standalone_${{ github.ref_name }}', '../standalone/requiredMCRProducts.txt');
             end
 
       - name: Start Tmate session
