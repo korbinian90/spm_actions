@@ -153,7 +153,13 @@ jobs:
           command: |
             addpath(genpath('.'));
             savepath;
-            spm_make_standalone
+            spm_make_standalone;
+            if ~isMATLABReleaseOlderThan("R2024b")
+              compiler.runtime.customInstaller('Runtime_${{ env.MATLAB_VERSION }}_for_spm_standalone_${{ env.ref_name }}', 'standalone/requiredMCRProducts.txt');
+            end
+
+      - name: Start Tmate session
+        uses: mxschmitt/action-tmate@v3
 
       # Compress to tar.gz or zip
       - name: Compress Unix
