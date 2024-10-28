@@ -146,6 +146,9 @@ jobs:
           search-text: <date>
           replacement-text: ${{ env.date }}
 
+      - name: Remove git folders
+        run: rm -rf .git*
+
       # 1) Add SPM with subfolders to the path 2) Run spm_make_standalone in matlab
       - name: Build Matlab Standalone
         uses: matlab-actions/run-command@v2
