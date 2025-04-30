@@ -26,4 +26,4 @@ jobs:
         uses: matlab-actions/run-command@v2
         with:
           command: |
-            disp('MATLAB token works!');
+            mcc -m sumTwoNumbers.m
