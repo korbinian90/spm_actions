@@ -6,8 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  MLM_LICENSE_TOKEN: ${{ secrets.MATLAB_BATCH_TOKEN }}
 
 jobs:
   verify-token:
