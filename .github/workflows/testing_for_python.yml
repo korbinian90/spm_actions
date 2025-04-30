@@ -6,6 +6,8 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  MLM_LICENSE_TOKEN: ${{ secrets.MATLAB_BATCH_TOKEN }}
 
 jobs:
   verify-token:
@@ -21,7 +23,13 @@ jobs:
           products: MATLAB_Compiler
           release: latest
 
-      - name: Run simple MATLAB command
+      - name: Save simple MATLAB file
+        run: |
+          echo "function y = sumTwoNumbers(x, z)
+          y = x + z;
+          end" > sumTwoNumbers.m
+
+      - name: Run simple MATLAB compilation
         uses: matlab-actions/run-command@v2
         with:
           command: |
