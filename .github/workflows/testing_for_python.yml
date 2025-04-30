@@ -20,6 +20,7 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v2
         with:
+          products: MATLAB_Compiler
           release: latest
 
       - name: Run simple MATLAB command
