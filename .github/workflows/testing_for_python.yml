@@ -20,12 +20,10 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v2
         with:
-          release: latest       # Choose a release you have access to
-                                  # :contentReference[oaicite:0]{index=0}
+          release: latest
 
       - name: Run simple MATLAB command
         uses: matlab-actions/run-command@v2
         with:
           command: |
-            disp('MATLAB token works!'); 
-            exit;              # :contentReference[oaicite:1]{index=1}
+            disp('MATLAB token works!');
